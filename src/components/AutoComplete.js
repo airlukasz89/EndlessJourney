@@ -37,22 +37,16 @@ const SuggestionsList = props => {
     }
     return <></>;
 };
-const Autocomplete = () => {
+const Autocomplete = ({ suggestionsParam }) => {
     const [inputValue, setInputValue] = React.useState("");
     const [filteredSuggestions, setFilteredSuggestions] = React.useState([]);
     const [selectedSuggestion, setSelectedSuggestion] = React.useState(0);
     const [displaySuggestions, setDisplaySuggestions] = React.useState(false);
 
 
-    const suggestions = [
-        "Oathbringer",
-        "American Gods",
-        "A Game of Thrones",
-        "Prince of Thorns",
-        "Assassin's Apprentice",
-        "The Hero of Ages",
-        "The Gunslinger"
-    ];
+    const suggestions = suggestionsParam;
+
+
 
     const onChange = event => {
         const value = event.target.value;

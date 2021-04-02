@@ -10,6 +10,9 @@ import AutoComplete from './components/AutoComplete';
 import './App.css';
 
 
+import Places from './places.json'
+
+
 const App = () => {
     const [position, setPosition] = useState([52.422058, 16.973800]);
 
@@ -27,6 +30,7 @@ const App = () => {
         'Safari',
         'Vivaldi'
     ]
+
 
     const handleChangePosition = (newPosition) => (
         setPosition(newPosition)
@@ -58,7 +62,7 @@ const App = () => {
 
                     <label>
                         <div className="autoComplete">
-                            <AutoComplete />
+                            <AutoComplete suggestionsParam={Places.map((place) => place.city)} />
                         </div>
                     </label>
 
