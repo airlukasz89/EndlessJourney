@@ -9,7 +9,8 @@ const SuggestionsList = props => {
         inputValue,
         onSelectSuggestion,
         displaySuggestions,
-        selectedSuggestion
+        selectedSuggestion,
+        fieldCallback
     } = props;
 
     if (inputValue && displaySuggestions) {
@@ -25,7 +26,7 @@ const SuggestionsList = props => {
                                 className={classname}
                                 onClick={() => onSelectSuggestion(index)}
                             >
-                                {suggestion}
+                                {fieldCallback(suggestion)}
                             </li>
                         );
                     })}
@@ -37,7 +38,7 @@ const SuggestionsList = props => {
     }
     return <></>;
 };
-const Autocomplete = ({ suggestionsParam }) => {
+const Autocomplete = ({ suggestionsParam, fieldCallback, onSelect }) => {
     const [inputValue, setInputValue] = React.useState("");
     const [filteredSuggestions, setFilteredSuggestions] = React.useState([]);
     const [selectedSuggestion, setSelectedSuggestion] = React.useState(0);
@@ -53,7 +54,7 @@ const Autocomplete = ({ suggestionsParam }) => {
         setInputValue(value);
 
         const filteredSuggestions = suggestions.filter(suggestion =>
-            suggestion.toLowerCase().includes(value.toLowerCase())
+            fieldCallback(suggestion).toLowerCase().includes(value.toLowerCase())
         );
 
         setFilteredSuggestions(filteredSuggestions);
@@ -62,7 +63,9 @@ const Autocomplete = ({ suggestionsParam }) => {
 
     const onSelectSuggestion = index => {
         setSelectedSuggestion(index);
-        setInputValue(filteredSuggestions[index]);
+        var suggestion = filteredSuggestions[index]
+        onSelect(suggestion);
+        setInputValue(fieldCallback(suggestion));
         setFilteredSuggestions([]);
         setDisplaySuggestions(false);
     };
@@ -82,6 +85,8 @@ const Autocomplete = ({ suggestionsParam }) => {
                 onSelectSuggestion={onSelectSuggestion}
                 displaySuggestions={displaySuggestions}
                 suggestions={filteredSuggestions}
+                fieldCallback={fieldCallback}
+
             />
         </>
     );

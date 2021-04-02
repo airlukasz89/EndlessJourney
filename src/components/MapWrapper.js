@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet'
 
 import 'leaflet/dist/leaflet.css';
 import '../styles/Map.css';
@@ -26,6 +26,12 @@ const MapEventsComponent = ({ onClick }) => {
     return null
 }
 
+function ChangeView({ center, zoom }) {
+    const map = useMap();
+    map.setView(center, zoom);
+    return null;
+}
+
 class MapWrapper extends Component {
     // state = {
     //     position: this.props.position
@@ -43,6 +49,7 @@ class MapWrapper extends Component {
             <div className={'map'}>
                 <MapContainer center={this.props.position} zoom={30} scrollWheelZoom={true}>
                     <MapEventsComponent onClick={this.props.onClick} />
+                    <ChangeView center={this.props.position} zoom={30} />
                     <TileLayer
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -40,6 +40,13 @@ const App = () => {
     )
 
 
+    const handleSelectPlace = (place) => (
+        setPosition([place.lat, place.lng])
+        // this.setState({
+        //   position: [1, 1]
+        // })
+    )
+
 
 
     useEffect(() => {
@@ -62,7 +69,7 @@ const App = () => {
 
                     <label>
                         <div className="autoComplete">
-                            <AutoComplete suggestionsParam={Places.map((place) => place.city)} />
+                            <AutoComplete onSelect={handleSelectPlace} suggestionsParam={Places} fieldCallback={place => place.city} />
                         </div>
                     </label>
 
