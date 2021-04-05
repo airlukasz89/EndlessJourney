@@ -1,9 +1,14 @@
 import React from 'react';
 import '../styles/Forecast.css';
-const Forecast = () => {
+const Forecast = ({ selectedPlaces }) => {
     return (
-        <h1>FORECAST</h1>
+        <div className="App">
+            <ul >
+                {selectedPlaces.map(selectedPlace => <li>{selectedPlace.city}</li>)}
+            </ul>
+        </div>
     );
+
 }
 
 export default Forecast;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 
-
 import MapWrapper from './components/MapWrapper';
 import Forecast from './components/Forecast';
 import Footer from './components/Footer';
@@ -17,6 +16,9 @@ const App = () => {
     const [position, setPosition] = useState([52.422058, 16.973800]);
 
     const [date, setDate] = useState(new Date());
+
+    const [selectedPlaces, setSelectedPlaces] = useState([]);
+
     // state  {position: [52.422058, 16.973800]
 
     const apiKey = '1e5c1d3bb87cf0a80418d12c9f172264';
@@ -32,22 +34,28 @@ const App = () => {
     ]
 
 
-    const handleChangePosition = (newPosition) => (
+    const handleChangePosition = (newPosition) => {
         setPosition(newPosition)
         // this.setState({
         //   position: [1, 1]
         // })
-    )
+    }
 
 
-    const handleSelectPlace = (place) => (
-        setPosition([place.lat, place.lng])
+    const handleSelectPlace = (place) => {
+        setPosition([place.lat, place.lng]);
+        setSelectedPlaces([...selectedPlaces, place]);
+
         // this.setState({
         //   position: [1, 1]
         // })
-    )
+    }
 
-
+    const sortedPlaces = Places.sort(function (a, b) {
+        if (a.city < b.city) { return -1; }
+        if (a.city > b.city) { return 1; }
+        return 0;
+    })
 
     useEffect(() => {
         console.log(position);
@@ -69,13 +77,13 @@ const App = () => {
 
                     <label>
                         <div className="autoComplete">
-                            <AutoComplete onSelect={handleSelectPlace} suggestionsParam={Places} fieldCallback={place => place.city} />
+                            <AutoComplete onSelect={handleSelectPlace} suggestionsParam={sortedPlaces} fieldCallback={place => place.city} />
                         </div>
                     </label>
 
                 </aside>
                 <section className="date">
-                    {<Forecast />}
+                    {<Forecast selectedPlaces={selectedPlaces} />}
                 </section>
             </main>
             <footer>{<Footer />}</footer>
