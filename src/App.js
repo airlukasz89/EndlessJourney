@@ -51,6 +51,24 @@ const App = () => {
         // })
     }
 
+    // const tasks = [...this.state.tasks];
+    // const index = tasks.findIndex(task => task.id === id);
+    // tasks.splice(index, 1);
+    // this.setState({
+    //   tasks
+    // })
+
+    const handleChoosenPlaceDelete = (id) => {
+        console.log(id)
+        console.log("delete elementu o id " + id);
+        const places = [...selectedPlaces];
+
+        const index = places.findIndex(selectedPlace => selectedPlace.id === id);
+        places.splice(index, 1);
+
+        setSelectedPlaces(places);
+    }
+
     const sortedPlaces = Places.sort(function (a, b) {
         if (a.city < b.city) { return -1; }
         if (a.city > b.city) { return 1; }
@@ -60,10 +78,10 @@ const App = () => {
     useEffect(() => {
         console.log(position);
         console.log(date);
-        fetch(`http://history.openweathermap.org/data/2.5/history/city?lat=${position[0]}&lon=${position[1]}&type=hour&start=${date.getTime()}&end=${date.getTime()}&appid=${apiKey}`)
+        // fetch(`http://history.openweathermap.org/data/2.5/history/city?lat=${position[0]}&lon=${position[1]}&type=hour&start=${date.getTime()}&end=${date.getTime()}&appid=${apiKey}`)
 
-            .then(response => response.json())
-            .then(data => console.log(data));
+        //     .then(response => response.json())
+        //     .then(data => console.log(data));
     }, [date, position])
 
     return (
@@ -83,7 +101,7 @@ const App = () => {
 
                 </aside>
                 <section className="date">
-                    {<Forecast selectedPlaces={selectedPlaces} />}
+                    {<Forecast selectedPlaces={selectedPlaces} delete2={handleChoosenPlaceDelete} />}
                 </section>
             </main>
             <footer>{<Footer />}</footer>

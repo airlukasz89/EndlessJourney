@@ -57,9 +57,10 @@ class MapWrapper extends Component {
 
 
                     {this.props.selectedPlaces.map(selectedPlace =>
-                        <Marker position={[selectedPlace.lat, selectedPlace.lng]}>
+                        <Marker key={selectedPlace.id} position={[selectedPlace.lat, selectedPlace.lng]}>
                             <Popup>
-                                {selectedPlace.city}
+                                {`${selectedPlace.city}  ${selectedPlace.country.toUpperCase()}`}
+
                             </Popup>
                         </Marker>
                     )}
