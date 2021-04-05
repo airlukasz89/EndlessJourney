@@ -70,7 +70,7 @@ const App = () => {
 
         <div className="app">
             <header>
-                {<MapWrapper position={position} onClick={handleChangePosition} />}
+                {<MapWrapper position={position} onClick={handleChangePosition} selectedPlaces={selectedPlaces} />}
             </header>
             <main>
                 <aside>
