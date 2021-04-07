@@ -19,6 +19,8 @@ const App = () => {
 
     const [selectedPlaces, setSelectedPlaces] = useState([]);
 
+    const [zoom, setZoom] = useState(30)
+
     // state  {position: [52.422058, 16.973800]
 
     const apiKey = '1e5c1d3bb87cf0a80418d12c9f172264';
@@ -69,6 +71,18 @@ const App = () => {
         setSelectedPlaces(places);
     }
 
+
+    const handleZoom = (newZoom) => {
+        setZoom(newZoom);
+    }
+
+    const handleDrag = (newPosition) => {
+        setPosition([newPosition.lat, newPosition.lng])
+    }
+
+
+
+
     const sortedPlaces = Places.sort(function (a, b) {
         if (a.city < b.city) { return -1; }
         if (a.city > b.city) { return 1; }
@@ -88,7 +102,7 @@ const App = () => {
 
         <div className="app">
             <header>
-                {<MapWrapper position={position} onClick={handleChangePosition} selectedPlaces={selectedPlaces} />}
+                {<MapWrapper position={position} zoom={zoom} onClick={handleChangePosition} selectedPlaces={selectedPlaces} onZoom={handleZoom} onDrag={handleDrag} />}
             </header>
             <main>
                 <aside>

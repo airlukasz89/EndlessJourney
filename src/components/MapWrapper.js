@@ -16,22 +16,6 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 
-const MapEventsComponent = ({ onClick }) => {
-    const map = useMapEvents({
-        click: (e) => {
-            let data = [e.latlng.lat, e.latlng.lng];
-            onClick(data)
-        }
-    })
-    return null
-}
-
-function ChangeView({ center, zoom }) {
-    const map = useMap();
-    map.setView(center, zoom);
-    return null;
-}
-
 class MapWrapper extends Component {
     // state = {
     //     position: this.props.position
@@ -47,9 +31,9 @@ class MapWrapper extends Component {
     render() {
         return (
             <div className={'map'}>
-                <MapContainer center={this.props.position} zoom={30} scrollWheelZoom={true}>
-                    <MapEventsComponent onClick={this.props.onClick} />
-                    <ChangeView center={this.props.position} zoom={30} />
+                <MapContainer center={this.props.position} zoom={this.props.zoom} scrollWheelZoom={true}>
+                    <MapEventsComponent onClick={this.props.onClick} onZoom={this.props.onZoom} onDrag={this.props.onDrag} />
+                    <ChangeView center={this.props.position} zoom={this.props.zoom} />
                     <TileLayer
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -69,6 +53,30 @@ class MapWrapper extends Component {
             </div>
         );
     }
+}
+
+
+const MapEventsComponent = ({ onClick, onZoom, onDrag }) => {
+    const map = useMapEvents({
+        click: (e) => {
+            let data = [e.latlng.lat, e.latlng.lng];
+            onClick(data)
+        },
+        zoom: (e) => {
+            onZoom(map.getZoom())
+
+        },
+        drag: (e) => {
+            onDrag(map.getCenter());
+        }
+    })
+    return null
+}
+
+function ChangeView({ center, zoom }) {
+    const map = useMap();
+    map.setView(center, zoom);
+    return null;
 }
 
 

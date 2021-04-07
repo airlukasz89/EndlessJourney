@@ -65,9 +65,11 @@ const Autocomplete = ({ suggestionsParam, fieldCallback, onSelect }) => {
         setSelectedSuggestion(index);
         var suggestion = filteredSuggestions[index]
         onSelect(suggestion);
-        setInputValue(fieldCallback(suggestion));
+        setInputValue('');
         setFilteredSuggestions([]);
         setDisplaySuggestions(false);
+
+
     };
 
     return (

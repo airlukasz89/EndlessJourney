@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/Forecast.css';
-const Forecast = ({ selectedPlaces, delete2 }) => {
+const Forecast = ({ selectedPlaces, delete2: deletePlace }) => {
     return (
         <div>
             <ul>
@@ -8,7 +8,7 @@ const Forecast = ({ selectedPlaces, delete2 }) => {
                     <li key={selectedPlace.id}>
                         {selectedPlace.city}
                         <button onClick={() => {
-                            delete2(selectedPlace.id)
+                            deletePlace(selectedPlace.id)
                         }}>Usuń pozycję</button>
                     </li>)}
             </ul>
