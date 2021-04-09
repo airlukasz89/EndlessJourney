@@ -10,7 +10,8 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 let DefaultIcon = L.icon({
     iconUrl: icon,
-    shadowUrl: iconShadow
+    shadowUrl: iconShadow,
+    iconAnchor: [12, 20]
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
@@ -76,7 +77,7 @@ function ChangeView({ center, zoom, selectedPlaces }) {
         var polyline;
 
         if (latlngs.length > 1) {
-            polyline = L.polyline(latlngs, { color: 'red' }).addTo(map);
+            polyline = L.polyline(latlngs, { color: '#033dfc' }).addTo(map);
             map.fitBounds(polyline.getBounds());
         }
 
