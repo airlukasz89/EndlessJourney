@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet'
 
@@ -33,7 +33,7 @@ class MapWrapper extends Component {
             <div className={'map'}>
                 <MapContainer center={this.props.viewPosition.position} zoom={this.props.viewPosition.zoom} scrollWheelZoom={true}>
                     <MapEventsComponent onZoom={this.props.onZoom} onDrag={this.props.onDrag} />
-                    <ChangeView center={this.props.viewPosition.position} zoom={this.props.viewPosition.zoom} />
+                    <ChangeView center={this.props.viewPosition.position} zoom={this.props.viewPosition.zoom} selectedPlaces={this.props.selectedPlaces} />
                     <TileLayer
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -67,8 +67,26 @@ const MapEventsComponent = ({ onZoom, onDrag }) => {
     return null
 }
 
-function ChangeView({ center, zoom }) {
+function ChangeView({ center, zoom, selectedPlaces }) {
     const map = useMap();
+
+    useEffect(() => {
+        var latlngs = selectedPlaces.map(selectedPlace => [selectedPlace.lat, selectedPlace.lng]);
+
+        var polyline;
+
+        if (latlngs.length > 1) {
+            polyline = L.polyline(latlngs, { color: 'red' }).addTo(map);
+            map.fitBounds(polyline.getBounds());
+        }
+
+        return () => {
+            if (polyline !== undefined) {
+                map.removeLayer(polyline)
+            }
+        }
+    }, [selectedPlaces])
+
     map.setView(center, zoom);
     return null;
 }
