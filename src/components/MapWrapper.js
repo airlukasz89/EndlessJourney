@@ -72,19 +72,53 @@ function ChangeView({ center, zoom, selectedPlaces }) {
     const map = useMap();
 
     useEffect(() => {
-        var latlngs = selectedPlaces.map(selectedPlace => [selectedPlace.lat, selectedPlace.lng]);
+        //TODO move it to App.js chyba..?
+        // var latlngs = selectedPlaces.map(selectedPlace => [selectedPlace.lat, selectedPlace.lng]);
 
-        var polyline;
+        // var polyline;
+        // var arrowPolyline;
 
-        if (latlngs.length > 1) {
-            polyline = L.polyline(latlngs, { color: '#033dfc' }).addTo(map);
-            map.fitBounds(polyline.getBounds());
+        // if (latlngs.length > 1) {
+        //     polyline = L.polyline(latlngs, { color: '#033dfc' }).addTo(map);
+        //     arrowPolyline = L.polyline
+        //     map.fitBounds(polyline.getBounds());
+        // }
+
+        // var latlng = [
+        //     [52.5, 16.8],
+        //     [30.6, 40.15]
+        // ]
+
+        var polylines = []
+
+
+        function createArrowPolyline(current, next) {
+            var latlngs = [
+                [
+                    current.lat, current.lng
+                ],
+                [
+                    next.lat, next.lng
+                ]
+            ]
+
+            return L.polyline(latlngs, { color: '#033dfc' })
         }
 
-        return () => {
-            if (polyline !== undefined) {
-                map.removeLayer(polyline)
+        function pairwise(arr, func) {
+            for (var i = 0; i < arr.length - 1; i++) {
+                func(arr[i], arr[i + 1])
             }
+        }
+        pairwise(selectedPlaces, (current, next) => {
+            polylines.push(createArrowPolyline(current, next))
+        })
+
+        polylines.map(polyline => polyline.addTo(map));
+
+
+        return () => {
+            polylines.map(polyline => map.removeLayer(polyline));
         }
     }, [selectedPlaces])
 
