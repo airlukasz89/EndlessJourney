@@ -1,6 +1,7 @@
 import React, { Component, useEffect } from 'react';
 import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
+import 'leaflet-arrowheads';
 
 import 'leaflet/dist/leaflet.css';
 import '../styles/Map.css';
@@ -40,14 +41,14 @@ class MapWrapper extends Component {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
 
-                    {this.props.selectedPlaces.map(selectedPlace =>
+                    {/* {this.props.selectedPlaces.map(selectedPlace =>
                         <Marker key={selectedPlace.id} position={[selectedPlace.lat, selectedPlace.lng]}>
                             <Popup>
                                 {`${selectedPlace.city}  ${selectedPlace.country.toUpperCase()}`}
 
                             </Popup>
                         </Marker>
-                    )}
+                    )} */}
                 </MapContainer>
             </div>
         );
@@ -72,23 +73,6 @@ function ChangeView({ center, zoom, selectedPlaces }) {
     const map = useMap();
 
     useEffect(() => {
-        //TODO move it to App.js chyba..?
-        // var latlngs = selectedPlaces.map(selectedPlace => [selectedPlace.lat, selectedPlace.lng]);
-
-        // var polyline;
-        // var arrowPolyline;
-
-        // if (latlngs.length > 1) {
-        //     polyline = L.polyline(latlngs, { color: '#033dfc' }).addTo(map);
-        //     arrowPolyline = L.polyline
-        //     map.fitBounds(polyline.getBounds());
-        // }
-
-        // var latlng = [
-        //     [52.5, 16.8],
-        //     [30.6, 40.15]
-        // ]
-
         var polylines = []
 
 
@@ -101,8 +85,14 @@ function ChangeView({ center, zoom, selectedPlaces }) {
                     next.lat, next.lng
                 ]
             ]
+            var zoomPercentage = 50 * zoom / 9 / 100;
+            console.log(zoomPercentage);
 
-            return L.polyline(latlngs, { color: '#033dfc' })
+
+            var arrowHeadsSize = 2 * (1 - zoomPercentage);
+            //console.log('arrowhead' + arrowHeadsSize);
+            return L.polyline(latlngs, { color: '#033dfc' }).arrowheads({ size: `${arrowHeadsSize}%` });
+
         }
 
         function pairwise(arr, func) {
@@ -120,7 +110,7 @@ function ChangeView({ center, zoom, selectedPlaces }) {
         return () => {
             polylines.map(polyline => map.removeLayer(polyline));
         }
-    }, [selectedPlaces])
+    }, [selectedPlaces, zoom])
 
     map.setView(center, zoom);
     return null;
