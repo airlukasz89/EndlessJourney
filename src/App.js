@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 
 import MapWrapper from './components/MapWrapper';
-import Forecast from './components/Forecast';
+import PlacesList from './components/PlacesList';
 import Footer from './components/Footer';
 import AutoComplete from './components/AutoComplete';
+import PlaceInfo from './components/PlaceInfo';
 
 import './App.css';
 
@@ -13,28 +14,30 @@ import Places from './places.json'
 
 
 const App = () => {
-    const [selectedPlaces, setSelectedPlaces] = useState([]);
+    const [placesList, setPlacesList] = useState([]);
 
     const [viewPosition, setViewPosition] = useState({
         position: [52.422058, 16.973800],
         zoom: 30
     });
 
+    const [selectedPlace, setSelectedPlace] = useState(null);
+
     const handleSelectPlace = (place) => {
         setViewPosition({
             position: [place.lat, place.lng],
             zoom: viewPosition.zoom
         })
-        setSelectedPlaces([...selectedPlaces, place]);
+        setPlacesList([...placesList, place]);
     }
 
     const handleChoosenPlaceDelete = (id) => {
-        const places = [...selectedPlaces];
+        const places = [...placesList];
 
         const index = places.findIndex(selectedPlace => selectedPlace.id === id);
         places.splice(index, 1);
 
-        setSelectedPlaces(places);
+        setPlacesList(places);
     }
 
     const handleZoom = (newZoom, newPosition) => {
@@ -57,20 +60,15 @@ const App = () => {
         return 0;
     })
 
-    // useEffect(() => {
-    //     console.log(position);
-    //     console.log(date);
-    //     // fetch(`http://history.openweathermap.org/data/2.5/history/city?lat=${position[0]}&lon=${position[1]}&type=hour&start=${date.getTime()}&end=${date.getTime()}&appid=${apiKey}`)
-
-    //     //     .then(response => response.json())
-    //     //     .then(data => console.log(data));
-    // }, [date, position])
+    useEffect(() => {
+        setPlacesList([...placesList, Places[0], Places[1]]);
+    }, [])
 
     return (
 
         <div className="app">
             <header>
-                {<MapWrapper viewPosition={viewPosition} selectedPlaces={selectedPlaces} onZoom={handleZoom} onDrag={handleDrag} />}
+                {<MapWrapper viewPosition={viewPosition} placesList={placesList} onZoom={handleZoom} onDrag={handleDrag} />}
             </header>
             <main>
                 <aside>
@@ -83,7 +81,10 @@ const App = () => {
 
                 </aside>
                 <section className="date">
-                    {<Forecast selectedPlaces={selectedPlaces} delete2={handleChoosenPlaceDelete} />}
+                    {<PlacesList placesList={placesList} delete2={handleChoosenPlaceDelete} />}
+                </section>
+                <section className="date">
+                    {selectedPlace !== null ? (<PlaceInfo place={selectedPlace} />) : (<div></div>)}
                 </section>
             </main>
             <footer>{<Footer />}</footer>

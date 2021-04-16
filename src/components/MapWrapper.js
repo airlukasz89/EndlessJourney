@@ -35,13 +35,13 @@ class MapWrapper extends Component {
             <div className={'map'}>
                 <MapContainer center={this.props.viewPosition.position} zoom={this.props.viewPosition.zoom} scrollWheelZoom={true}>
                     <MapEventsComponent onZoom={this.props.onZoom} onDrag={this.props.onDrag} />
-                    <ChangeView center={this.props.viewPosition.position} zoom={this.props.viewPosition.zoom} selectedPlaces={this.props.selectedPlaces} />
+                    <ChangeView center={this.props.viewPosition.position} zoom={this.props.viewPosition.zoom} placesList={this.props.placesList} />
                     <TileLayer
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
 
-                    {/* {this.props.selectedPlaces.map(selectedPlace =>
+                    {/* {this.props.placesList.map(selectedPlace =>
                         <Marker key={selectedPlace.id} position={[selectedPlace.lat, selectedPlace.lng]}>
                             <Popup>
                                 {`${selectedPlace.city}  ${selectedPlace.country.toUpperCase()}`}
@@ -69,7 +69,7 @@ const MapEventsComponent = ({ onZoom, onDrag }) => {
     return null
 }
 
-function ChangeView({ center, zoom, selectedPlaces }) {
+function ChangeView({ center, zoom, placesList }) {
     const map = useMap();
 
     useEffect(() => {
@@ -85,8 +85,12 @@ function ChangeView({ center, zoom, selectedPlaces }) {
                     next.lat, next.lng
                 ]
             ]
-            var zoomPercentage = 50 * zoom / 9 / 100;
+            // var zoomPercentage = 50 * zoom / 9 / 100;
+            // console.log(zoomPercentage);
+
+            var zoomPercentage = 9 * zoom / 50 / 100;
             console.log(zoomPercentage);
+
 
 
             var arrowHeadsSize = 2 * (1 - zoomPercentage);
@@ -100,7 +104,7 @@ function ChangeView({ center, zoom, selectedPlaces }) {
                 func(arr[i], arr[i + 1])
             }
         }
-        pairwise(selectedPlaces, (current, next) => {
+        pairwise(placesList, (current, next) => {
             polylines.push(createArrowPolyline(current, next))
         })
 
@@ -110,7 +114,7 @@ function ChangeView({ center, zoom, selectedPlaces }) {
         return () => {
             polylines.map(polyline => map.removeLayer(polyline));
         }
-    }, [selectedPlaces, zoom])
+    }, [placesList, zoom])
 
     map.setView(center, zoom);
     return null;
