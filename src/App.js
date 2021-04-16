@@ -54,6 +54,13 @@ const App = () => {
         })
     }
 
+    const handleButtonClick = (place) => {
+        setSelectedPlace(place)
+
+    }
+
+
+
     const sortedPlaces = Places.sort(function (a, b) {
         if (a.city < b.city) { return -1; }
         if (a.city > b.city) { return 1; }
@@ -81,10 +88,15 @@ const App = () => {
 
                 </aside>
                 <section className="date">
-                    {<PlacesList placesList={placesList} delete2={handleChoosenPlaceDelete} />}
+                    {<PlacesList placesList={placesList} deletePlace={handleChoosenPlaceDelete} showInfo={handleButtonClick} />}
+
                 </section>
                 <section className="date">
-                    {selectedPlace !== null ? (<PlaceInfo place={selectedPlace} />) : (<div></div>)}
+                    {selectedPlace !== null ? (
+                        <PlaceInfo
+                            place={selectedPlace}
+                        />
+                    ) : (<div></div>)}
                 </section>
             </main>
             <footer>{<Footer />}</footer>
