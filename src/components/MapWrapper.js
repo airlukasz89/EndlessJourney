@@ -117,6 +117,8 @@ function ChangeView({ center, zoom, placesList }) {
     }, [placesList, zoom])
 
     map.setView(center, zoom);
+
+
     return null;
 }
 

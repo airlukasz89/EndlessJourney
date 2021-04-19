@@ -54,9 +54,12 @@ const App = () => {
         })
     }
 
-    const handleButtonClick = (place) => {
-        setSelectedPlace(place)
-
+    const handleMoreBtnClick = (place) => {
+        setSelectedPlace(place);
+        setViewPosition({
+            position: [place.lat, place.lng],
+            zoom: viewPosition.zoom
+        });
     }
 
 
@@ -74,7 +77,7 @@ const App = () => {
     return (
 
         <div className="app">
-            <header>
+            {/* <header>
                 {<MapWrapper viewPosition={viewPosition} placesList={placesList} onZoom={handleZoom} onDrag={handleDrag} />}
             </header>
             <main>
@@ -88,7 +91,7 @@ const App = () => {
 
                 </aside>
                 <section className="date">
-                    {<PlacesList placesList={placesList} deletePlace={handleChoosenPlaceDelete} showInfo={handleButtonClick} />}
+                    {<PlacesList placesList={placesList} deletePlace={handleChoosenPlaceDelete} showInfo={handleMoreBtnClick} />}
 
                 </section>
                 <section className="date">
@@ -99,8 +102,40 @@ const App = () => {
                     ) : (<div></div>)}
                 </section>
             </main>
-            <footer>{<Footer />}</footer>
+            <footer>{<Footer />}</footer> */}
+
+
+            <div className="float-container">
+
+                <div className="float-child">
+                    <MapWrapper viewPosition={viewPosition} placesList={placesList} onZoom={handleZoom} onDrag={handleDrag} />
+                </div>
+
+                <div className="float-child">
+                    <div className="autoComplete">
+                        <AutoComplete onSelect={handleSelectPlace} suggestionsParam={sortedPlaces} fieldCallback={place => place.city} />
+                    </div>
+
+                    <PlacesList placesList={placesList} deletePlace={handleChoosenPlaceDelete} showInfo={handleMoreBtnClick} />
+
+                    {selectedPlace !== null ? (
+                        <PlaceInfo
+                            place={selectedPlace}
+                        />
+                    ) : (<div></div>)}
+
+                </div>
+
+
+
+            </div>
+            <div className="footer">
+                <footer>{<Footer />}</footer>
+            </div>
+
         </div>
+
+
 
     );
 }
