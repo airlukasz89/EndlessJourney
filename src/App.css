@@ -1,11 +1,11 @@
-.float-container {
-  padding: 20px;
+.app {
+  width: 100vw;
 }
 
 .float-child {
-  width: 50%;
+  width: 40vw;
+  margin: 5vw;
   float: left;
-  padding: 20px;
 
 }
 
