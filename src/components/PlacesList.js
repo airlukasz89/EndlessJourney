@@ -8,7 +8,7 @@ const PlacesList = ({ placesList, deletePlace, showInfo }) => {
                     <li key={place.id}>
                         {place.city}
                         <button onClick={() => {
-                            deletePlace(place.id)
+                            deletePlace(place)
                         }}>Usuń pozycję</button>
                         <button onClick={() => {
                             showInfo(place)

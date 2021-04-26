@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 import MapWrapper from './components/MapWrapper';
@@ -6,6 +8,7 @@ import PlacesList from './components/PlacesList';
 import Footer from './components/Footer';
 import AutoComplete from './components/AutoComplete';
 import PlaceInfo from './components/PlaceInfo';
+import ImageSlider from './components/ImageSlider';
 
 import './App.css';
 
@@ -15,6 +18,41 @@ import Places from './places.json'
 
 const App = () => {
     const [placesList, setPlacesList] = useState([]);
+
+    const [imageUrls, setImageUrls] = useState([
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGpni2Q9H7Haba9lTqFtmLAmeyo30ziRL_H2vkte2uknSnQyyvJnMWs1GaJKfuKE3ozO8&usqp=CAU",
+
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR49rWErL0HxhWRfgw_lG0Gjme5hOsutJHnIg&usqp=CAU",
+
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCiMh_PJug-MaZtZQaQPmlxZMMZj7P-UZ05A&usqp=CAU",
+
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSm3eblahJKldydr-kH-YvT2sXifBpeolqu1g&usqp=CAU"
+    ]);
+
+
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    const handleChangeSlide = (slideVector) => {
+
+        console.log(activeIndex)
+        var slideLeft = slideVector === -1;
+        var slideLimit = !slideLeft ? imageUrls.length : -1;
+        console.log("limit  " + slideLimit)
+        console.log("left  " + slideLeft)
+
+        if (activeIndex + slideVector == slideLimit) {
+            console.log("zeruje")
+            console.log("zeruje do   " + (slideLeft ? imageUrls.length - 1 : 0))
+            setActiveIndex(slideLeft ? imageUrls.length - 1 : 0);
+        } else {
+            console.log("ruszam")
+            setActiveIndex(prevValue => prevValue + slideVector);
+        }
+
+    }
+
+
+
 
     const [viewPosition, setViewPosition] = useState({
         position: [52.422058, 16.973800],
@@ -28,15 +66,23 @@ const App = () => {
             position: [place.lat, place.lng],
             zoom: viewPosition.zoom
         })
-        setPlacesList([...placesList, place]);
+
+        if (placesList.includes(place)) {
+            toast("Miasto jest już na liście!");
+
+        } else {
+            setPlacesList([...placesList, place]);
+        }
     }
 
-    const handleChoosenPlaceDelete = (id) => {
+    const handleChoosenPlaceDelete = (place) => {
         const places = [...placesList];
 
-        const index = places.findIndex(selectedPlace => selectedPlace.id === id);
+        const index = places.findIndex(p => p === place);
         places.splice(index, 1);
-
+        if (selectedPlace !== null && selectedPlace === place) {
+            setSelectedPlace(null);
+        }
         setPlacesList(places);
     }
 
@@ -61,6 +107,8 @@ const App = () => {
             zoom: viewPosition.zoom
         });
     }
+
+
 
 
 
@@ -114,6 +162,7 @@ const App = () => {
                 <div className="float-child">
                     <div className="autoComplete">
                         <AutoComplete onSelect={handleSelectPlace} suggestionsParam={sortedPlaces} fieldCallback={place => place.city} />
+                        <ToastContainer />
                     </div>
 
                     <PlacesList placesList={placesList} deletePlace={handleChoosenPlaceDelete} showInfo={handleMoreBtnClick} />
@@ -121,14 +170,19 @@ const App = () => {
                     {selectedPlace !== null ? (
                         <PlaceInfo
                             place={selectedPlace}
+
                         />
                     ) : (<div></div>)}
 
                 </div>
-
-
-
             </div>
+
+            <div className="float-child">
+                <ImageSlider imageUrls={imageUrls} activeIndex={activeIndex} handleChange={handleChangeSlide} />
+            </div>
+
+
+
             <div className="footer">
                 <footer>{<Footer />}</footer>
             </div>

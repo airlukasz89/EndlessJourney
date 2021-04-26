@@ -3,8 +3,9 @@ const PlaceInfo = ({ place }) => {
     return (
         <div>
             <p>{place.city}</p>
-            <p>Współrzędne GPS:  {`${place.lat}  ${place.lng}`}</p>
-            <p>kraj: {`${place.country} ${place.admin_name} `}</p>
+            <p><strong>współrzędne GPS:</strong>  {`${place.lat}  ${place.lng}`}</p>
+            <p><strong>kraj:</strong> {`${place.country}`}</p>
+            <p><strong>dystrykt:</strong>{`${place.admin_name}`}</p>
 
         </div>
 
