@@ -32,7 +32,7 @@ const App = () => {
 
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const handleChangeSlide = (slideVector) => {
+    const handleSliderSlide = (slideVector) => {
 
         console.log(activeIndex)
         var slideLeft = slideVector === -1;
@@ -52,6 +52,9 @@ const App = () => {
     }
 
 
+    const handleSliderChange = (index) => {
+        setActiveIndex(index)
+    }
 
 
     const [viewPosition, setViewPosition] = useState({
@@ -178,7 +181,7 @@ const App = () => {
             </div>
 
             <div className="float-child">
-                <ImageSlider imageUrls={imageUrls} activeIndex={activeIndex} handleChange={handleChangeSlide} />
+                <ImageSlider imageUrls={imageUrls} activeIndex={activeIndex} handleSlide={handleSliderSlide} handleChange={handleSliderChange} />
             </div>
 
 

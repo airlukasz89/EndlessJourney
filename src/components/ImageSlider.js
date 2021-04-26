@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '../styles/ImageSlider.css'
 
-const ImageSlider = ({ imageUrls, activeIndex, handleChange }) => {
+const ImageSlider = ({ imageUrls, activeIndex, handleSlide, handleChange }) => {
     console.log(imageUrls)
     const images = imageUrls.map((url, index) => {
         const shootRenderUrl = index === activeIndex;
@@ -16,6 +16,12 @@ const ImageSlider = ({ imageUrls, activeIndex, handleChange }) => {
         return imageToRender;
     })
 
+    const dots = imageUrls.map((_, index) =>
+        <button onClick={() => {
+            handleChange(index)
+        }}>*</button>
+    )
+
     useEffect(() => {
 
         console.log(activeIndex)
@@ -24,12 +30,15 @@ const ImageSlider = ({ imageUrls, activeIndex, handleChange }) => {
     return (
         <div id="slideshow">
             {images}
+            {dots}
+
+
             <button onClick={() => {
-                handleChange(1)
+                handleSlide(1)
             }}>Next</button>
 
             <button onClick={() => {
-                handleChange(-1)
+                handleSlide(-1)
             }}>Previous</button>
         </div>
 
