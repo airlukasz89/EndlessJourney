@@ -1,10 +1,10 @@
 .app {
-  width: 100vw;
+  max-width: 100vw;
 }
 
 .float-child {
   width: 40vw;
-  margin: 5vw;
+  margin: 1vw;
   float: left;
 
 }
@@ -18,5 +18,6 @@
   background-color: black;
   color: white;
   text-align: center;
+  line-height: 10vh;
 
 }

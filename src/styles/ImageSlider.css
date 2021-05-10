@@ -1,7 +1,148 @@
-#slideshow {
-    margin: 50px auto;
+/* #slideshow {
+    margin: 220px auto;
     position: relative;
-    min-height: 35vh;
-    padding: 10px;
+    min-height: 22vh;
+    padding-top: 200px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+#slideshow div {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+} */
+
+/* .slider-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    scroll-behavior: smooth;
+}
+
+.image-slider {
+    display: flex;
+    width: 70vw;
+    height: 70vh;
+    background: #FFF7EA;
+    border: solid 12px #DCD2C6;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.image-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.slide {
+    display: flex;
+    object-fit: cover;
+    min-width: 100%;
+}
+
+.slider-nav ul {
+    display: block;
+    transform: rotate(-90deg);
+}
+
+.slider-nav ul li {
+    list-style: none;
+    padding: 0em 0 2em 19em;
+}
+
+.slider-nav ul li:nth-child(7) {
+    padding: 0em 0 2em 20em;
+}
+
+.slider-nav ul li a {
+    display: block;
+    font-size: 1em;
+    width: 1.5em;
+    height: 1.5em;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    transform: rotate(90deg);
+    background: #FFF7EA;
+    border: 0.3em solid #DCD2C6;
+    color: #FFF7EA
+}
+
+.slider-nav ul li a:hover {
+    background: #E8624D;
+    border: 0.3em solid #DCD2C6;
+    color: #E8624D
+} */
+
+
+.slider {
+    position: relative;
+    width: 350px;
+    margin: 0;
+    height: 350px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.slider-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.slide {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+}
+
+.arrow {
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform ease-in .1s;
+}
+
+.nextArrow {
+    position: absolute;
+    top: 50%;
+    right: 25px;
+    z-index: 999;
+    color: black;
+    border: 4px solid black;
+}
+
+
+
+.backArrow {
+    position: absolute;
+    top: 50%;
+    left: 25px;
+    z-index: 999;
+    color: black;
+    border: 4px solid black;
+}
+
+.nextArrow:hover,
+.backArrow:hover {
+    border: 4px solid white;
+    transition: .3s;
+}
+
+#vids {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#vids a:first-of-type {
+    margin-bottom: 5px;
 }

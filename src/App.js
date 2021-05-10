@@ -10,6 +10,7 @@ import AutoComplete from './components/AutoComplete';
 import PlaceInfo from './components/PlaceInfo';
 import ImageSlider from './components/ImageSlider';
 
+
 import './App.css';
 
 
@@ -19,42 +20,85 @@ import Places from './places.json'
 const App = () => {
     const [placesList, setPlacesList] = useState([]);
 
+
+    const getRandomNumber = () => Math.floor(Math.random() * 600)
     const [imageUrls, setImageUrls] = useState([
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGpni2Q9H7Haba9lTqFtmLAmeyo30ziRL_H2vkte2uknSnQyyvJnMWs1GaJKfuKE3ozO8&usqp=CAU",
 
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR49rWErL0HxhWRfgw_lG0Gjme5hOsutJHnIg&usqp=CAU",
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
 
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCiMh_PJug-MaZtZQaQPmlxZMMZj7P-UZ05A&usqp=CAU",
-
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSm3eblahJKldydr-kH-YvT2sXifBpeolqu1g&usqp=CAU"
     ]);
+
 
 
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const handleSliderSlide = (slideVector) => {
+    const [translateValue, setTranslateValue] = useState(0);
 
-        console.log(activeIndex)
-        var slideLeft = slideVector === -1;
-        var slideLimit = !slideLeft ? imageUrls.length : -1;
-        console.log("limit  " + slideLimit)
-        console.log("left  " + slideLeft)
-
-        if (activeIndex + slideVector == slideLimit) {
-            console.log("zeruje")
-            console.log("zeruje do   " + (slideLeft ? imageUrls.length - 1 : 0))
-            setActiveIndex(slideLeft ? imageUrls.length - 1 : 0);
+    const handleGoToPrevSlide = () => {
+        if (activeIndex === 0) {
+            return;
         } else {
-            console.log("ruszam")
-            setActiveIndex(prevValue => prevValue + slideVector);
+            setActiveIndex(prevState => prevState - 1);
+            setTranslateValue(prevState => prevState + slideWidth())
         }
 
     }
 
 
-    const handleSliderChange = (index) => {
-        setActiveIndex(index)
+    const handleGoToNextSlide = () => {
+        // Exiting the method early if we are at the end of the images array.
+        // We also want to reset currentIndex and translateValue, so we return
+        // to the first image in the array.
+        if (activeIndex === imageUrls.length - 1) {
+            setActiveIndex(0);
+            setTranslateValue(0);
+        } else {
+            setActiveIndex(prevState => prevState + 1);
+            setTranslateValue(prevState => prevState + -(slideWidth()))
+        }
+
+        // This will not run if we met the if condition above
+
+
     }
+
+    const slideWidth = () => {
+        return document.querySelector('.slide').clientWidth
+    }
+
+
+
+
+    // const handleSliderSlide = (slideVector) => {
+
+    //     console.log(activeIndex)
+    //     var slideLeft = slideVector === -1;
+    //     var slideLimit = !slideLeft ? imageUrls.length : -1;
+    //     console.log("limit  " + slideLimit)
+    //     console.log("left  " + slideLeft)
+
+    //     if (activeIndex + slideVector == slideLimit) {
+    //         console.log("zeruje")
+    //         console.log("zeruje do   " + (slideLeft ? imageUrls.length - 1 : 0))
+    //         setActiveIndex(slideLeft ? imageUrls.length - 1 : 0);
+    //     } else {
+    //         console.log("ruszam")
+    //         setActiveIndex(prevValue => prevValue + slideVector);
+    //     }
+
+    // }
+
+
+    // const handleSliderChange = (index) => {
+    //     setActiveIndex(index)
+    // }
 
 
     const [viewPosition, setViewPosition] = useState({
@@ -104,14 +148,25 @@ const App = () => {
     }
 
     const handleMoreBtnClick = (place) => {
+
+
+        if (selectedPlace === place) {
+            toggleImageSlider()
+        } else {
+            setIsVisibleImageSlider(true);
+        }
         setSelectedPlace(place);
+
         setViewPosition({
             position: [place.lat, place.lng],
             zoom: viewPosition.zoom
         });
     }
 
-
+    const [isVisibleImageSlider, setIsVisibleImageSlider] = useState(false);
+    const toggleImageSlider = () => {
+        setIsVisibleImageSlider(prev => !prev);
+    }
 
 
 
@@ -179,16 +234,22 @@ const App = () => {
 
                 </div>
             </div>
-
-            <div className="float-child">
-                <ImageSlider imageUrls={imageUrls} activeIndex={activeIndex} handleSlide={handleSliderSlide} handleChange={handleSliderChange} />
+            <div className="float-container">
+                <div className="float-child">
+                    {isVisibleImageSlider ? (
+                        <ImageSlider imageUrls={imageUrls} activeIndex={activeIndex} translateValue={translateValue} slidePrev={handleGoToPrevSlide} slideNext={handleGoToNextSlide} slideWidth={slideWidth} />
+                    ) : (<div></div>)}
+                </div>
             </div>
+
+
 
 
 
             <div className="footer">
                 <footer>{<Footer />}</footer>
             </div>
+
 
         </div>
 

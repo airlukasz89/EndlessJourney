@@ -1,49 +1,94 @@
+// const Slide = ({ image }) => {
+//     const styles = {
+//         backgroundImage: `url(${image})`,
+//         backgroundSize: 'cover',
+//         backgroundRepeat: 'no-repeat',
+//         backgroundPosition: '50% 60%'
+//     }
+//     return <div className="slide" style={styles}></div>
+// }
+
+
+
+const LeftArrow = (props) => {
+    return (
+        <div className="backArrow arrow" onClick={props.goToPrevSlide}>
+            <FontAwesomeIcon icon={faArrowLeft} size="2x" />
+        </div>
+    );
+}
+
+
+const RightArrow = (props) => {
+    return (
+        <div className="nextArrow arrow" onClick={props.goToNextSlide}>
+            <FontAwesomeIcon icon={faArrowRight} size="2x" />
+        </div>
+    );
+}
+
+
+
+
 import React, { useEffect } from 'react';
-import '../styles/ImageSlider.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import '../styles/ImageSlider.css';
 
-const ImageSlider = ({ imageUrls, activeIndex, handleSlide, handleChange }) => {
-    console.log(imageUrls)
-    const images = imageUrls.map((url, index) => {
-        const shootRenderUrl = index === activeIndex;
 
-        const imageToRender = shootRenderUrl ?
-            <div>
-                <img src={url} />
-            </div>
-            :
-            <div></div>
+const ImageSlider = ({ imageUrls, activeIndex, translateValue, slidePrev, slideNext }) => {
 
-        return imageToRender;
-    })
+    console.log(imageUrls);
+    const images = imageUrls.map((url, index) => <div key={index} className="slide" style={{
+        backgroundImage: `url("${url}")`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: '50% 60%'
+    }}>
+    </div>)
 
     const dots = imageUrls.map((_, index) =>
-        <button onClick={() => {
+        <button className={index === activeIndex ? "active" : ""} onClick={() => {
             handleChange(index)
         }}>*</button>
-    )
+    );
+
+
 
     useEffect(() => {
 
-        console.log(activeIndex)
+
     }, [activeIndex]);
 
     return (
-        <div id="slideshow">
-            {images}
-            {dots}
 
+        <div className="slider">
 
-            <button onClick={() => {
-                handleSlide(1)
-            }}>Next</button>
+            <div className="slider-wrapper"
+                style={{
+                    transform: `translateX(${translateValue}px)`,
+                    transition: 'transform ease-out 0.45s'
+                }}>
+                {
+                    images
+                }
+            </div>
 
-            <button onClick={() => {
-                handleSlide(-1)
-            }}>Previous</button>
+            <LeftArrow
+                goToPrevSlide={slidePrev}
+            />
+
+            <RightArrow
+                goToNextSlide={slideNext}
+            />
         </div>
-
 
     );
 }
 
 export default ImageSlider;
+
+
+
+

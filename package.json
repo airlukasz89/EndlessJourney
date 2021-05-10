@@ -25,11 +25,14 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "1.2.35",
+    "@fortawesome/free-solid-svg-icons": "5.15.3",
+    "@fortawesome/react-fontawesome": "0.1.14",
     "leaflet": "^1.7.1",
     "leaflet-arrowheads": "^1.2.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-leaflet": "^3.1.0",
-    "react-toastify":"7.0.3"
+    "react-toastify": "7.0.3"
   }
 }
