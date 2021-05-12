@@ -11,6 +11,7 @@ import PlaceInfo from './components/PlaceInfo';
 import ImageSlider from './components/ImageSlider';
 
 
+
 import './App.css';
 
 
@@ -147,6 +148,9 @@ const App = () => {
         })
     }
 
+
+
+
     const handleMoreBtnClick = (place) => {
 
 
@@ -161,6 +165,7 @@ const App = () => {
             position: [place.lat, place.lng],
             zoom: viewPosition.zoom
         });
+
     }
 
     const [isVisibleImageSlider, setIsVisibleImageSlider] = useState(false);
@@ -223,7 +228,7 @@ const App = () => {
                         <ToastContainer />
                     </div>
 
-                    <PlacesList placesList={placesList} deletePlace={handleChoosenPlaceDelete} showInfo={handleMoreBtnClick} />
+                    <PlacesList placesList={placesList} deletePlace={handleChoosenPlaceDelete} showInfo={handleMoreBtnClick} selectedPlace={selectedPlace} />
 
                     {selectedPlace !== null ? (
                         <PlaceInfo
