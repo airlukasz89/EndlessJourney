@@ -43,6 +43,29 @@ const App = () => {
         }
     }
 
+    const handleClickOnMap = (position) => {
+        setViewPosition({
+            position: [position.lat, position.lng],
+            zoom: viewPosition.zoom
+        })
+        let newPlace = {
+            city: "bla bla",
+            country: "5555",
+            admin_name: 'Polska',
+            lat: position.lat,
+            lng: position.lng
+
+        }
+        if (placesList.includes(newPlace)) {
+            toast("Miasto jest już na liście!");
+
+        } else {
+            setPlacesList([...placesList, newPlace]);
+        }
+
+        setSelectedPlace(newPlace);
+    }
+
     const handleChoosenPlaceDelete = (place) => {
         const places = [...placesList];
 
@@ -99,7 +122,7 @@ const App = () => {
             <div className="float-container">
 
                 <div className="float-child">
-                    <MapWrapper viewPosition={viewPosition} placesList={placesList} onZoom={handleZoom} onDrag={handleDrag} />
+                    <MapWrapper viewPosition={viewPosition} placesList={placesList} onZoom={handleZoom} onDrag={handleDrag} onClick={handleClickOnMap} />
                 </div>
 
                 <div className="float-child">

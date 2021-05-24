@@ -34,7 +34,7 @@ class MapWrapper extends Component {
         return (
             <div className={'map'}>
                 <MapContainer center={this.props.viewPosition.position} zoom={this.props.viewPosition.zoom} scrollWheelZoom={true}>
-                    <MapEventsComponent onZoom={this.props.onZoom} onDrag={this.props.onDrag} />
+                    <MapEventsComponent onZoom={this.props.onZoom} onDrag={this.props.onDrag} onClick={this.props.onClick} />
                     <ChangeView center={this.props.viewPosition.position} zoom={this.props.viewPosition.zoom} placesList={this.props.placesList} />
                     <TileLayer
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -56,7 +56,7 @@ class MapWrapper extends Component {
 }
 
 
-const MapEventsComponent = ({ onZoom, onDrag }) => {
+const MapEventsComponent = ({ onZoom, onDrag, onClick }) => {
     const map = useMapEvents({
         zoom: (e) => {
             onZoom(map.getZoom(), map.getCenter())
@@ -64,6 +64,10 @@ const MapEventsComponent = ({ onZoom, onDrag }) => {
         },
         drag: (e) => {
             onDrag(map.getCenter());
+        },
+        click: (e) => {
+            onClick(e.latlng);
+
         }
     })
     return null
