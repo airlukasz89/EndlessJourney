@@ -19,88 +19,8 @@ import Places from './places.json'
 
 
 const App = () => {
+
     const [placesList, setPlacesList] = useState([]);
-
-
-    const getRandomNumber = () => Math.floor(Math.random() * 600)
-    const [imageUrls, setImageUrls] = useState([
-
-        "https://picsum.photos/200?x=" + getRandomNumber(),
-        "https://picsum.photos/200?x=" + getRandomNumber(),
-        "https://picsum.photos/200?x=" + getRandomNumber(),
-        "https://picsum.photos/200?x=" + getRandomNumber(),
-        "https://picsum.photos/200?x=" + getRandomNumber(),
-        "https://picsum.photos/200?x=" + getRandomNumber(),
-        "https://picsum.photos/200?x=" + getRandomNumber(),
-        "https://picsum.photos/200?x=" + getRandomNumber(),
-
-    ]);
-
-
-
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    const [translateValue, setTranslateValue] = useState(0);
-
-    const handleGoToPrevSlide = () => {
-        if (activeIndex === 0) {
-            return;
-        } else {
-            setActiveIndex(prevState => prevState - 1);
-            setTranslateValue(prevState => prevState + slideWidth())
-        }
-
-    }
-
-
-    const handleGoToNextSlide = () => {
-        // Exiting the method early if we are at the end of the images array.
-        // We also want to reset currentIndex and translateValue, so we return
-        // to the first image in the array.
-        if (activeIndex === imageUrls.length - 1) {
-            setActiveIndex(0);
-            setTranslateValue(0);
-        } else {
-            setActiveIndex(prevState => prevState + 1);
-            setTranslateValue(prevState => prevState + -(slideWidth()))
-        }
-
-        // This will not run if we met the if condition above
-
-
-    }
-
-    const slideWidth = () => {
-        return document.querySelector('.slide').clientWidth
-    }
-
-
-
-
-    // const handleSliderSlide = (slideVector) => {
-
-    //     console.log(activeIndex)
-    //     var slideLeft = slideVector === -1;
-    //     var slideLimit = !slideLeft ? imageUrls.length : -1;
-    //     console.log("limit  " + slideLimit)
-    //     console.log("left  " + slideLeft)
-
-    //     if (activeIndex + slideVector == slideLimit) {
-    //         console.log("zeruje")
-    //         console.log("zeruje do   " + (slideLeft ? imageUrls.length - 1 : 0))
-    //         setActiveIndex(slideLeft ? imageUrls.length - 1 : 0);
-    //     } else {
-    //         console.log("ruszam")
-    //         setActiveIndex(prevValue => prevValue + slideVector);
-    //     }
-
-    // }
-
-
-    // const handleSliderChange = (index) => {
-    //     setActiveIndex(index)
-    // }
-
 
     const [viewPosition, setViewPosition] = useState({
         position: [52.422058, 16.973800],
@@ -149,28 +69,16 @@ const App = () => {
     }
 
 
-
-
     const handleMoreBtnClick = (place) => {
-
-
-        if (selectedPlace === place) {
-            toggleImageSlider()
-        } else {
-            setIsVisibleImageSlider(true);
-        }
-        setSelectedPlace(place);
-
         setViewPosition({
             position: [place.lat, place.lng],
             zoom: viewPosition.zoom
         });
-
-    }
-
-    const [isVisibleImageSlider, setIsVisibleImageSlider] = useState(false);
-    const toggleImageSlider = () => {
-        setIsVisibleImageSlider(prev => !prev);
+        if (selectedPlace === place) {
+            setSelectedPlace(null);
+        } else {
+            setSelectedPlace(place)
+        }
     }
 
 
@@ -188,34 +96,6 @@ const App = () => {
     return (
 
         <div className="app">
-            {/* <header>
-                {<MapWrapper viewPosition={viewPosition} placesList={placesList} onZoom={handleZoom} onDrag={handleDrag} />}
-            </header>
-            <main>
-                <aside>
-
-                    <label>
-                        <div className="autoComplete">
-                            <AutoComplete onSelect={handleSelectPlace} suggestionsParam={sortedPlaces} fieldCallback={place => place.city} />
-                        </div>
-                    </label>
-
-                </aside>
-                <section className="date">
-                    {<PlacesList placesList={placesList} deletePlace={handleChoosenPlaceDelete} showInfo={handleMoreBtnClick} />}
-
-                </section>
-                <section className="date">
-                    {selectedPlace !== null ? (
-                        <PlaceInfo
-                            place={selectedPlace}
-                        />
-                    ) : (<div></div>)}
-                </section>
-            </main>
-            <footer>{<Footer />}</footer> */}
-
-
             <div className="float-container">
 
                 <div className="float-child">
@@ -241,8 +121,11 @@ const App = () => {
             </div>
             <div className="float-container">
                 <div className="float-child">
-                    {isVisibleImageSlider ? (
-                        <ImageSlider imageUrls={imageUrls} activeIndex={activeIndex} translateValue={translateValue} slidePrev={handleGoToPrevSlide} slideNext={handleGoToNextSlide} slideWidth={slideWidth} />
+                    {selectedPlace !== null ? (
+                        <ImageSlider
+                            place={selectedPlace}
+
+                        />
                     ) : (<div></div>)}
                 </div>
             </div>

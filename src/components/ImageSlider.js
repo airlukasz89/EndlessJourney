@@ -30,14 +30,61 @@ const RightArrow = (props) => {
 
 
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import '../styles/ImageSlider.css';
 
 
-const ImageSlider = ({ imageUrls, activeIndex, translateValue, slidePrev, slideNext }) => {
+const ImageSlider = ({ place }) => {
+
+    // <ImageSlider imageUrls={imageUrls} activeIndex={activeIndex} translateValue={translateValue} slidePrev={handleGoToPrevSlide} slideNext={handleGoToNextSlide} slideWidth={slideWidth} />
+
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    const [translateValue, setTranslateValue] = useState(0);
+
+    const getRandomNumber = () => Math.floor(Math.random() * 600)
+    const [imageUrls, setImageUrls] = useState([
+
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+        "https://picsum.photos/200?x=" + getRandomNumber(),
+
+    ]);
+
+
+    const slidePrev = () => {
+        if (activeIndex === 0) {
+            return;
+        } else {
+            setActiveIndex(prevState => prevState - 1);
+            setTranslateValue(prevState => prevState + slideWidth())
+        }
+
+    }
+
+
+    const slideNext = () => {
+        if (activeIndex === imageUrls.length - 1) {
+            setActiveIndex(0);
+            setTranslateValue(0);
+        } else {
+            setActiveIndex(prevState => prevState + 1);
+            setTranslateValue(prevState => prevState + -(slideWidth()))
+        }
+
+    }
+
+    const slideWidth = () => {
+        return document.querySelector('.slide').clientWidth
+    }
 
     console.log(imageUrls);
     const images = imageUrls.map((url, index) => <div key={index} className="slide" style={{
@@ -58,8 +105,18 @@ const ImageSlider = ({ imageUrls, activeIndex, translateValue, slidePrev, slideN
 
     useEffect(() => {
 
+        const apiUrl = `https://commons.wikimedia.org/w/api.php?format=json&action=query&generator=geosearch&ggsprimary=all&ggsnamespace=6&ggsradius=500&ggscoord=${place.lat}|${place.lng}&ggslimit=20&prop=imageinfo&iilimit=1&iiprop=url&iiurlwidth=800&iiurlheight=600&origin=*`;
 
-    }, [activeIndex]);
+        fetch(apiUrl)
+
+            .then((response) => response.json())
+            .then((data) => {
+                var urls = Object.values(data.query.pages).map(page => page.imageinfo[0].thumburl)
+                setImageUrls(urls)
+            });
+
+
+    }, [place]);
 
     return (
 
